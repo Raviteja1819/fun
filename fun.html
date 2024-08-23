@@ -48,6 +48,15 @@
             margin-top: 20px;
             text-transform: uppercase;
             font-weight: bold;
+            animation: vibrate 0.1s infinite;
+        }
+
+        @keyframes vibrate {
+            0% { transform: translate(0px, 0px); }
+            25% { transform: translate(1px, -1px); }
+            50% { transform: translate(-1px, 1px); }
+            75% { transform: translate(1px, 1px); }
+            100% { transform: translate(-1px, -1px); }
         }
     </style>
 </head>
@@ -68,16 +77,17 @@
             trickLink.style.display = 'none';
             hackedMessage.style.display = 'block';
 
-            // Play an alert sound
-            const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
+            // Play a terrifying sound loop
+            const audio = new Audio('https://www.soundjay.com/button/sounds/beep-07.wav');
+            audio.loop = true;
             audio.play();
 
-            // Shake the screen for 1.5 seconds
-            setTimeout(() => {
-                document.body.classList.remove('shake');
-            }, 1500); 
+            // Shake the screen indefinitely
+            const shakeInterval = setInterval(() => {
+                document.body.classList.add('shake');
+            }, 1500);
 
-            // Attempt to go fullscreen
+            // Try to go fullscreen
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
             } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
@@ -87,6 +97,17 @@
             } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
                 document.documentElement.msRequestFullscreen();
             }
+
+            // Listen for the volume up button press to stop the effect
+            window.addEventListener('keydown', function(event) {
+                if (event.key === 'ArrowUp' || event.keyCode === 38) { // Volume up key
+                    document.body.classList.remove('shake');
+                    hackedMessage.style.display = 'none';
+                    clearInterval(shakeInterval);
+                    audio.pause();
+                    alert('You have regained control!');
+                }
+            });
         });
     </script>
 
