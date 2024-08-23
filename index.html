@@ -25,6 +25,12 @@
             animation-iteration-count: infinite;
         }
 
+        @keyframes flash {
+            0% { background-color: black; }
+            50% { background-color: red; }
+            100% { background-color: black; }
+        }
+
         body {
             text-align: center;
             margin-top: 20%;
@@ -58,6 +64,10 @@
             75% { transform: translate(1px, 1px); }
             100% { transform: translate(-1px, -1px); }
         }
+
+        .flashing-background {
+            animation: flash 0.2s infinite;
+        }
     </style>
 </head>
 <body>
@@ -74,6 +84,7 @@
         trickLink.addEventListener('click', function(e) {
             e.preventDefault();
             document.body.classList.add('shake');
+            document.body.classList.add('flashing-background');
             trickLink.style.display = 'none';
             hackedMessage.style.display = 'block';
 
@@ -102,6 +113,7 @@
             window.addEventListener('keydown', function(event) {
                 if (event.key === 'ArrowUp' || event.keyCode === 38) { // Volume up key
                     document.body.classList.remove('shake');
+                    document.body.classList.remove('flashing-background');
                     hackedMessage.style.display = 'none';
                     clearInterval(shakeInterval);
                     audio.pause();
