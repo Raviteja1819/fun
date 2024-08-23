@@ -77,21 +77,25 @@
         Your mobile is hacked by <br> Palithya Siddu! <br> All controls are under Siddu Palithya!
     </div>
 
+    <audio id="scarySound" src="https://www.soundjay.com/button/sounds/beep-07.wav"></audio>
+
     <script>
         const trickLink = document.getElementById('trickLink');
         const hackedMessage = document.getElementById('hackedMessage');
+        const scarySound = document.getElementById('scarySound');
 
         trickLink.addEventListener('click', function(e) {
             e.preventDefault();
+
+            // Play the sound
+            scarySound.play().catch(error => {
+                console.error("Audio playback failed:", error);
+            });
+
             document.body.classList.add('shake');
             document.body.classList.add('flashing-background');
             trickLink.style.display = 'none';
             hackedMessage.style.display = 'block';
-
-            // Play a terrifying sound loop
-            const audio = new Audio('https://www.soundjay.com/button/sounds/beep-07.wav');
-            audio.loop = true;
-            audio.play();
 
             // Shake the screen indefinitely
             const shakeInterval = setInterval(() => {
@@ -116,7 +120,7 @@
                     document.body.classList.remove('flashing-background');
                     hackedMessage.style.display = 'none';
                     clearInterval(shakeInterval);
-                    audio.pause();
+                    scarySound.pause();
                     alert('You have regained control!');
                 }
             });
